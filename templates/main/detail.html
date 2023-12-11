@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class = "container my-3">
+        <div class="row mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h2>{{ product.name }} 상세 페이지</h2>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <form method="post" action="{% url 'main:product_purchase' product.id %}">
+                            {% csrf_token %}
+                            <label for="count">수량:</label>
+                            <input type="number" id="count" name="count" min="1" required>
+                            
+                            <script>
+                                function purchase(){
+                                    var count = document.getElementById('count').value;
+
+                                    //입력값이 1이상인 경우에만 구매 완료 메시지 출력
+                                    if(count>=1){
+                                        alert("구");
+                                    }else{
+                                        alert('수량을 입력해주세요');
+                                    }
+                                }
+                                </script>
+                            {% if user.is_active%}
+                            <button type="submit" class="btn btn-primary">구매하기</button>
+                            {% endif %}
+                        </form>
+                        <p>{{m}}</p>
+
+                    </li>
+                    <li class="list-group-item">
+                        <img class="card-img-top" src="{{ product.imgfile.url }}" alt="{{ product.name }} 이미지" style="width: 500px; height: auto;">
+                    </li>
+                    <li class="list-group-item"> <b>가격 : </b> {{ product.price }} </li>
+                    <li class="list-group-item"> <b>설명 : </b> {{ product.description }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

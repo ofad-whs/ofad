@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+	<!-- Header-->
+	<header class="bg-dark py-5">
+		<div class="container px-4 px-lg-5 my-5">
+			<div class="text-center text-white">
+				<h1 class="display-4 fw-bolder">
+					Shop in style
+				</h1>
+				<br><p class="lead fw-normal text-white-50 mb-0">Now on Black Friday sale!</p>
+                {% if user.is_active%}
+                    <p class="lead fw-normal text-white-50 mb-0">안녕하세요, {{user.nickname}}님</p>
+                {%else %}
+                    <p class="lead fw-normal text-white-50 mb-0">상단 메뉴바를 통해 로그인을 해주세요.</p>
+                {%endif%}
+			</div>
+		</div>
+	</header>
+
+
+{% if product_list %}
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+      <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+      {% for product in product_list %}
+                <!--상품-->
+                <div class="col mb-5">
+                  <div class="card h-100">
+                      <!-- Sale badge-->
+                      <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+                      <!-- Product image-->
+                      <img class="card-img-top" src="{{ product.imgfile.url }}"/>
+                      <!-- Product details-->
+                      <div class="card-body p-4">
+                          <div class="text-center">
+                              <!-- Product name-->
+                              <h5 class="fw-bolder">{{ product.name }}</h5>
+                              <!-- Product reviews-->
+                              <div class="d-flex justify-content-center small text-warning mb-2">
+                                  <div class="bi-star-fill"></div>
+                                  <div class="bi-star-fill"></div>
+                                  <div class="bi-star-fill"></div>
+                                  <div class="bi-star-fill"></div>
+                                  <div class="bi-star-fill"></div>
+                              </div>
+                              <!-- Product price-->
+                              <!--<span class="text-muted text-decoration-line-through">{{ product.price }}$</span>-->
+                              {{ product.price }}$
+                          </div>
+                      </div>
+                      <!-- Product actions-->
+                      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'main:detail' product.id %}">Show more</a></div>
+                      </div>
+                  </div>
+              </div>
+              <!--상품 끝-->
+    {% endfor %}
+    </div>
+  </div>
+</section>
+{% else %}
+    <p>등록된 상품이 없습니다.</p>
+{% endif %}
+
+{% endblock %}

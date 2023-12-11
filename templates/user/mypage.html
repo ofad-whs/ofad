@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if user.is_active%}
+<br>
+<div class="container my-3">
+<h5><span style="background-color: black; color: white;">마이페이지</span></h5>
+    <!-- 회원정보 -->
+    <h3 class="border-bottom py-2">안녕하세요, {{user.nickname}}님</h3>
+    <div class="card my-3">
+        <div class="card-body">
+            <div class="card-text" style="white-space: pre-line;">
+                이메일 : {{user.email}}
+                id: {{user.id}}
+                포인트 : {{user.point}}
+            </div>
+        </div>
+    </div>
+    <div class="card my-3">
+        <div class="card-body">
+            <div class="card-text" style="white-space: pre-line;">
+                <h4>구매 내역</h4>
+                <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>이름</th>
+                <th>가격</th>
+                <th>수량</th>
+                <th>전체 가격</th>
+                <th>구매 날짜</th>
+                <th>반품</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pr in p %}
+                <tr>
+                    <td>{{ pr.productId.name }}</td>
+                    <td>{{ pr.productId.price }}</td>
+                    <td>{{ pr.count }}</td>
+                    <td>{{ pr.total }}</td>
+                    <td>{{ pr.date }}</td>
+                    <td>
+                        <form method="post" action="{% url 'user:return_product' pr.id %}">
+                            {% csrf_token %}
+                            <button type="submit"  class="btn btn-primary btn-sm">반품하기</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+    <a href="{% url 'user:change' %}" class="btn btn-primary">비밀번호 변경</a>
+    <a href="{% url 'user:logout' %}" class="btn btn-primary">로그아웃</a>
+    <a href="{% url 'main:index' %}" class="btn btn-primary">메인 페이지로</a>
+
+</div>
+
+    {%else %}
+    <br>
+    <div class="container my-3">
+        <h5><span style="background-color: black; color: white;">마이페이지</span></h5>
+        <h3 class="border-bottom py-2">로그인 후 이용해주세요.</h3>
+
+        <a href="{% url 'user:login' %}" class="btn btn-primary">로그인</a>
+        <a href="{% url 'user:register' %}" class="btn btn-primary">회원가입</a>
+    </div>
+{%endif%}
+
+
+{% endblock %}

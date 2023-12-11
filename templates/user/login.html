@@ -1,0 +1,30 @@
+
+{% extends 'base.html'%}
+
+{% block content%}
+
+
+<div class="container">
+    {% if user.is_active %}
+        <p>이미 로그인 하셨습니다</p>
+        <a href="{% url 'main:index' %}" class="btn btn-primary">메인 페이지로</a>
+
+    {%else%}
+    <div class="container my-3">
+        <div class="card-body">
+            <h4><abbr title="attribute">로그인</abbr></h4><br>
+            <div class="mb-3">
+                <form method="POST" action="{% url 'user:login' %}">
+                    {% csrf_token %}
+                    <div>
+                        {{form.as_p}}
+                    <br>
+                    <button type="submit" class = "btn btn-primary">로그인</button>
+                    <a href="{% url 'user:register' %}" class="btn btn-primary">회원가입</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    {%endif%}
+</div>
+{%endblock%}
