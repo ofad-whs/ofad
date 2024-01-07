@@ -76,9 +76,16 @@ def review_create(request):
  * API Name : 리뷰 삭제
  * [DELETE] reviewBoard/review/delete/{reviewID}
 """
+
+"""
+* No.2 logical flaw bugs 2
+* 후기계시글 삭제 권한검증 미흡
+세션의 user와review의 author를 비교하는 과정 추가하여 검증하기
+"""
 def review_delete(request, review_id):
     review = get_object_or_404(Review, pk=review_id)
-    review.delete()
+    if request.user == review.author :#추가
+        review.delete()
     return redirect('reviewBoard:index')
 
 

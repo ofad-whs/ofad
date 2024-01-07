@@ -41,7 +41,10 @@ def detail(request, question_id):
 @login_required(login_url='user:login')
 def answer_create(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    question.answer_set.create(content=request.POST.get('content'), create_date=timezone.now(), author=request.user)
+    #앞뒤공백제거
+    content = request.POST.get('content','').strip()
+    if content:
+        question.answer_set.create(content=request.POST.get('content'), create_date=timezone.now(), author=request.user)
     return redirect('noticeBoard:detail', question_id=question.id)
 
 

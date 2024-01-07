@@ -94,14 +94,20 @@ def change(request):
     *[POST] /user/me/return_product/{productwithuser_id} 
     Login 했을 시에만
 """
+
+"""
+    *No. 1 Logic Flow Bug
+    *반품 시 사용자 검증 미흡
+    request.user.id와 product_with_user.userId비교를 통해 검증
+"""
 @login_required(login_url = 'user:login')
 def return_product(request, productwithuser_id):
     if request.method == "POST":
-        print(productwithuser_id)
         product_with_user = get_object_or_404(ProductWithUser, id=productwithuser_id)
-        request.user.point += product_with_user.total //2
-        request.user.save()
-        product_with_user.delete()
+        if request.user.id == product_with_user.userId.id:#추가
+            request.user.point += product_with_user.total //2
+            request.user.save()
+            product_with_user.delete()
     return redirect('user:mypage')
 
 

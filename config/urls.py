@@ -21,10 +21,13 @@ from django.conf import settings
 from django.urls import re_path
 from django.views.static import serve
 
-
-
+"""
+ *취약점 No.5
+ * admin
+ 수정 전:path('admin/', admin.site.urls),
+"""
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('secretonpageofadadministrator/',admin.site.urls),
     path('noticeBoard/', include('noticeBoard.urls')),
     path('',include('main.urls',namespace= 'main')),
     path('user/',include('user.urls', namespace="user")),
